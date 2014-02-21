@@ -27,7 +27,7 @@ class AnalysisBlock {
 
 		// Create and open analysis html file
 		try {
-			fileAnalysis = new File("resultfiles\\"+(new File(resultFile.sourceFilename).getName())+"_files\\analysis"+(firstLine/Config.analysisCountPerFile)+".html");
+			fileAnalysis = new File("resultfiles"+File.separator+(new File(resultFile.sourceFilename).getName())+"_files"+File.separator+"analysis"+(firstLine/Config.analysisCountPerFile)+".html");
 			new File(fileAnalysis.getParent()).mkdirs();
 			if (!fileAnalysis.exists()) fileAnalysis.createNewFile();
 			fwAnalysis = new FileWriter(fileAnalysis.getAbsoluteFile());
@@ -120,7 +120,7 @@ public class HtmlResultFile {
 	HtmlResultFile(String sourceFilename)
 	{
 		this.sourceFilename = sourceFilename;
-		this.htmlFilename = "resultfiles\\"+(new File(sourceFilename).getName())+".html";
+		this.htmlFilename = "resultfiles"+File.separator+(new File(sourceFilename).getName())+".html";
 
 		// Create and open html file
 		try {

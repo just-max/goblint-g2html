@@ -42,7 +42,7 @@ public class Result {
 	{
 		try {
 			// Create and open css file
-			File fileCss = new File("resultfiles\\style.css");
+			File fileCss = new File("resultfiles"+File.separator+"style.css");
 			new File(fileCss.getParent()).mkdirs();
 			if (!fileCss.exists()) fileCss.createNewFile();
 			FileWriter fwCss = new FileWriter(fileCss.getAbsoluteFile());
@@ -113,7 +113,7 @@ public class Result {
 	{
 		try {
 			// Create and open javascript file
-			File fileJs = new File("resultfiles\\script.js");
+			File fileJs = new File("resultfiles"+File.separator+"script.js");
 			new File(fileJs.getParent()).mkdirs();
 			if (!fileJs.exists()) fileJs.createNewFile();
 			FileWriter fwJs = new FileWriter(fileJs.getAbsoluteFile());
