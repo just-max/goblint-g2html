@@ -120,11 +120,16 @@ public class HtmlResultFile {
 	HtmlResultFile(String sourceFilename)
 	{
 		this.sourceFilename = sourceFilename;
-		this.htmlFilename = "resultfiles"+File.separator+(new File(sourceFilename).getName())+".html";
+		this.htmlFilename = "resultfiles" + File.separator + (new File(sourceFilename).getName())+".html";
 
 		// Create and open html file
 		try {
-			fileHtml = new File(htmlFilename);			
+			System.out.println(htmlFilename);
+			fileHtml = new File(htmlFilename);
+			if (fileHtml == null)
+				System.out.println("WHY?");
+			else
+				System.out.println(fileHtml.getParent());
 			new File(fileHtml.getParent()).mkdirs();
 			if (!fileHtml.exists()) fileHtml.createNewFile();
 			fwHtml = new FileWriter(fileHtml.getAbsoluteFile());
