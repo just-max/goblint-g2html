@@ -2,17 +2,16 @@
 <project basedir="." default="build" name="g2html">
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.6"/>
-    <property name="source" value="1.6"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
     <path id="g2html.classpath">
         <pathelement location="bin"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
-                <exclude name="**/*.java"/>
-            </fileset>
+        <mkdir dir="bin/resources"/>
+        <copy includeemptydirs="false" todir="bin/resources">
+            <fileset dir="resources" />
         </copy>
     </target>
     <target name="clean">
