@@ -68,19 +68,6 @@ public class FileStats {
 		}
 	}
 	
-	void printJson(File f) throws IOException{
-		FileWriter os = new FileWriter(f); 
-		os.write("{\n");
-		printDead(os);
-		os.write(",\n");
-		printNodeToFun(os);
-		os.write(",\n");
-		printData(os,"data",lineData);
-		os.write(",\n");
-		printData(os,"warnings",warnData);
-		os.write("}\n");
-		os.close();
-	}
 
 	private void printData(FileWriter os, String name, Map<Integer,TreeSet<String>> mp) throws IOException {
 		os.write("\""+name+"\" : {\n  ");
@@ -128,5 +115,17 @@ public class FileStats {
 
 	public Set<String> getFunctions() {
 		return functions;
+	}
+
+	public void writeJson(FileWriter os) throws IOException {
+		os.write("{\n");
+		printDead(os);
+		os.write(",\n");
+		printNodeToFun(os);
+		os.write(",\n");
+		printData(os, "data", lineData);
+		os.write(",\n");
+		printData(os,"warnings",warnData);
+		os.write("}\n");
 	}
 }

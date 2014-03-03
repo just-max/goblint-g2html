@@ -118,4 +118,9 @@ public class Result {
 		File f = new File(resDir,"index.xml");
 		return f;
 	}
+
+	public File getDataFile() {
+		File f = new File(resDir,"fileData.js");
+		return f;
+	}
 }
