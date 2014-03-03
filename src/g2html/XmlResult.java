@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class XmlResult {
-	private final static Logger LOGGER = Logger.getLogger(XmlResult.class.getName());
-
 	// Parse the complete xml result file
 	static public ResultStats parse(Result res) throws IOException {
 		ResultStats resultStats = new ResultStats();
@@ -20,7 +18,9 @@ public class XmlResult {
 			XMLOutputFactory outFactory = XMLOutputFactory.newInstance();
 			XMLStreamWriter  globalStream = outFactory.createXMLStreamWriter(new FileOutputStream(res.getGlobalFile()));
 			globalStream.writeStartDocument();
+			globalStream.writeCharacters("\n");
 			globalStream.writeProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"../globals.xsl\"");
+			globalStream.writeCharacters("\n");
 			globalStream.writeStartElement("globs");
 
 			// Walk through the xml file
@@ -32,7 +32,7 @@ public class XmlResult {
 						if (elementName.equals("file"))    Structure.parseFileNode(parser, resultStats);
 						if (elementName.equals("loc"))     Loc.parseLocNode(parser,res,resultStats);
 						if (elementName.equals("glob"))    Glob.parseGlobNode(parser, globalStream);
-						if (elementName.equals("warning")) Warning.parseWarningNode(parser, res);
+						if (elementName.equals("warning")) Warning.parseWarningNode(parser, res, resultStats);
 						break;
 
 					default:

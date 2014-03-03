@@ -1,12 +1,9 @@
 package g2html;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 public class Config {
-	private final static Logger LOGGER = Logger.getLogger(Config.class.getName());
-
-	public static String xmlFileName       = "r.xml";
+	public static String xmlFileName       = "";
 	public static String resultDir         = "result";
 	public static String cfgSubdir         = "cfgs";
 	public static String nodesSubdir       = "nodes";
@@ -15,7 +12,8 @@ public class Config {
 	
 	public static String[] preparedFiles = {"style.css", "node.xsl", "warn.xsl", "frame.html",
 										"nothing.html", "script.js", "svg-pan-zoom.js", "jquery-2.1.0.min.js",
-										"globals.xsl", "report.xsl", "AlegreyaSans400.woff", "AlegreyaSans500.woff"};
+										"globals.xsl", "report.xsl", "AlegreyaSans400.woff", "AlegreyaSans500.woff",
+										"jquery.browser.js", "jquery.iframe-auto-height.js"};
 	
 	// Parse arguments
 	public static void load(String[] args)
@@ -42,7 +40,6 @@ public class Config {
 
 	public static File getFunDotFile(String file, String fun) {
 		File f = new File(new File(new File(new File("."),"cfgs"),file),fun+".dot");
-		LOGGER.info("getFunDotFile("+file+","+fun+") = "+f.getAbsolutePath());
 		return f;
 	}
 }

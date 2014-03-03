@@ -2,11 +2,8 @@ package g2html;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class ProcessDotFileToSvg extends Thread {
-	private final static Logger LOGGER = Logger.getLogger(ProcessDotFileToSvg.class.getName());
-
 	private File to;
 	private File from;
 

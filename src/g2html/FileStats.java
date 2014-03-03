@@ -7,10 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Logger;
 
 public class FileStats {
-	private final static Logger LOGGER = Logger.getLogger(FileStats.class.getName());
 
 	private Set<String>                  functions;
 	private Set<Integer>                 deadLines;

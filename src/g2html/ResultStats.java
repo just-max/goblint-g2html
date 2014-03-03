@@ -12,13 +12,10 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 public class ResultStats {
-	private final static Logger LOGGER = Logger.getLogger(ResultStats.class.getName());
-
-
 	private Map<String,FileStats> fm;
 	
 	public ResultStats(){
-		fm = new TreeMap<String,FileStats>();
+		fm = new TreeMap<>();
 	}
 	
 	public FileStats getStats(String s){

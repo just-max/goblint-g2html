@@ -2,16 +2,11 @@ package g2html;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Main {
-	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
-
 	public static void main(String[] args) {
 		// Load configuration (default settings and/or from file)
 		Config.load(args);
-		LOGGER.setLevel(Level.SEVERE);
 
 		// Start
 		long startTime = System.currentTimeMillis();

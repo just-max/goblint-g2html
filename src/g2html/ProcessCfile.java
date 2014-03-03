@@ -1,11 +1,8 @@
 package g2html;
 
 import java.io.*;
-import java.util.logging.Logger;
 
 public class ProcessCfile extends Thread {
-	private final static Logger LOGGER = Logger.getLogger(ProcessCfile.class.getName());
-
 	private static String pre =
 					"<html>\n<head>\n  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:400,500' rel='stylesheet' type='text/css' /> \n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n  <link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"></link>\n</head>\n<body>\n  <div class=\"source-block\">";
 	private static String post =
@@ -40,10 +37,10 @@ public class ProcessCfile extends Thread {
 	public void run() {
 		super.run();
 		if (from!=null && from.exists()) {
-			LOGGER.info("processing '"+from.getAbsolutePath()+"' to '"+to.getAbsolutePath()+"'");
 			try {
 				FileWriter fw = new FileWriter(to);
 				fw.append(pre);
+				fw.append("\n");
 				int lineNr = 1;
 				try (BufferedReader br = new BufferedReader(new FileReader(from))) {
 					for (String line; (line = br.readLine()) != null; ) {
@@ -54,10 +51,12 @@ public class ProcessCfile extends Thread {
 						fw.append(ln3);
 						encodeHTMLAppend(line, fw);
 						fw.append(ln4);
+						fw.append("\n");
 						lineNr++;
 					}
 				}
 				fw.append(post);
+				fw.append("\n");
 				fw.close();
 			} catch (IOException e) {
 				e.printStackTrace();

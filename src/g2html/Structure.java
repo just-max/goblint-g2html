@@ -3,11 +3,8 @@ package g2html;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.util.logging.Logger;
 
 public class Structure {
-	private final static Logger LOGGER = Logger.getLogger(Structure.class.getName());
-
 	public static void parseFileNode(XMLStreamReader parser, ResultStats resultStats) throws XMLStreamException {
 		String name = parser.getAttributeValue("","name");
 		String fun = "";

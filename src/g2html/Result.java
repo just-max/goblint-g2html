@@ -2,11 +2,8 @@ package g2html;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
 
 public class Result {
-	private final static Logger LOGGER = Logger.getLogger(Result.class.getName());
-
 	File resDir;
 	File cfgDir;
 	File filDir;
@@ -31,7 +28,6 @@ public class Result {
 	}
 	
 	private void prepareDirectories(String resultDir) throws IOException {
-		LOGGER.info("prepareDirectories(...)");
 		resDir = new File(resultDir);
 		deleteDirectory(resDir);
 		if (!resDir.mkdir()) throw new IOException("prepareDirectories - resDir");
@@ -94,7 +90,6 @@ public class Result {
 
 	public File getListingFile(String file) {
 		File f = new File(filDir, file+".html");
-		LOGGER.info("getListingFile("+file+") = "+f.getAbsolutePath());
 		return f;
 	}
 
@@ -102,30 +97,25 @@ public class Result {
 		File dir = new File(cfgDir,file) ;
 		dir.mkdir();
 		File f = new File(dir,fun+".svg");
-		LOGGER.info("getSvgFile("+file+","+fun+") = "+f.getAbsolutePath());
 		return f;
 	}
 
 	public File getNodeFile(String node) {
 		File f = new File(nodDir,node+".xml");
-		LOGGER.info("getNodeFile("+node+") = "+f.getAbsolutePath());
 		return f;
 	}
 
 	public File getWarningFile(String war) {
 		File f = new File(warDir,war+".xml");
-		LOGGER.info("getWarningFile("+war+") = "+f.getAbsolutePath());
 		return f;
 	}
 
 	public File getGlobalFile() {
 		File f = new File(nodDir,"globals.xml");
-		LOGGER.info("getGlobalFile() = "+f.getAbsolutePath());
 		return f;
 	}
 	public File getReportFile() {
 		File f = new File(resDir,"index.xml");
-		LOGGER.info("getReportFile() = "+f.getAbsolutePath());
 		return f;
 	}
 }
