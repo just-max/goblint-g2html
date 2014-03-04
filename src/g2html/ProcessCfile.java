@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ProcessCfile extends Thread {
 	private static String pre =
-					"<html>\n<head>\n  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:400,500' rel='stylesheet' type='text/css' /> \n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n  <link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"></link>\n</head>\n<body>\n  <div class=\"source-block\">";
+					"<html>\n<head>\n  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:400,500' rel='stylesheet' type='text/css' /> \n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n <script src=\"../jquery-2.1.0.min.js\"></script>\n  <script type=\"text/javascript\" src=\"../jquery.iframeResizer.min.js\"></script>\n <script type=\"text/javascript\" src=\"../fileData.js\"></script>\n  <script type=\"text/javascript\" src=\"../script.js\"></script>\n<link rel=\"stylesheet\" href=\"../style.css\" type=\"text/css\"></link>\n</head>\n<body onload=\"javascript:init_source()\">\n  <div class=\"source-block\">";
 	private static String post =
 					"</div></body></html>";
 
