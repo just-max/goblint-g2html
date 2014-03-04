@@ -13,7 +13,7 @@ public class Config {
 	public static String[] preparedFiles = {"style.css", "node.xsl", "warn.xsl", "frame.html",
 										"nothing.html", "script.js", "svg-pan-zoom.js", "jquery-2.1.0.min.js",
 										"globals.xsl", "report.xsl", "AlegreyaSans400.woff", "AlegreyaSans500.woff",
-										"jquery.browser.js", "jquery.iframe-auto-height.js"};
+										"iframeResizer.contentWindow.min.js", "jquery.iframeResizer.min.js"};
 	
 	// Parse arguments
 	public static void load(String[] args)
