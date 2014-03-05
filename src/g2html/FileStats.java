@@ -117,15 +117,18 @@ public class FileStats {
 		return functions;
 	}
 
-	public void writeJson(FileWriter os) throws IOException {
+	void printJson(File f) throws IOException{
+		FileWriter os = new FileWriter(f);
 		os.write("{\n");
 		printDead(os);
 		os.write(",\n");
 		printNodeToFun(os);
 		os.write(",\n");
-		printData(os, "data", lineData);
+		printData(os,"data",lineData);
 		os.write(",\n");
 		printData(os,"warnings",warnData);
 		os.write("}\n");
+		os.close();
 	}
+
 }

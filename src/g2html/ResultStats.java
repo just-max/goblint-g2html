@@ -5,12 +5,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 public class ResultStats {
 	private Map<String,FileStats> fm;
@@ -33,21 +31,9 @@ public class ResultStats {
 	}
 	
 	public void printJson(Result r) throws IOException{
-		FileWriter os = new FileWriter(r.getDataFile());
-		os.write("fileData = {\n");
-		boolean first = true;
 		for(String s : fm.keySet()){
-			if (!first)
-				os.append(",\n");
-			first = false;
-			os.append("\"");
-			os.append(s);
-			os.write("\" : \n");
-			fm.get(s).writeJson(os);
+			fm.get(s).printJson(new File(r.filDir, s + ".json"));
 		}
-
-		os.write("}\n");
-		os.close();
 	}
 	public void printReport(Result r) throws IOException, XMLStreamException {
 		XMLOutputFactory outFactory = XMLOutputFactory.newInstance();
