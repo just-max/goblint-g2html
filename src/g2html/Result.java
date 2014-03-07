@@ -3,6 +3,7 @@ package g2html;
 import java.io.*;
 import java.nio.channels.FileChannel;
 
+// handles the result directory structure
 public class Result {
 	File resDir;
 	File cfgDir;
@@ -10,6 +11,7 @@ public class Result {
 	File nodDir;
 	File warDir;
 
+	// recursive delete
 	public static boolean deleteDirectory(File directory) {
 	    if(directory.exists()){
 	        File[] files = directory.listFiles();
@@ -26,7 +28,8 @@ public class Result {
 	    }
 	    return(directory.delete());
 	}
-	
+
+	// delete the result directory and recreate it anew
 	private void prepareDirectories(String resultDir) throws IOException {
 		resDir = new File(resultDir);
 		deleteDirectory(resDir);
@@ -44,7 +47,8 @@ public class Result {
 		warDir = new File(resDir,Config.warningsSubdir);
 		if (!warDir.mkdir()) throw new IOException("prepareDirectories - warDir");
 	}
-	
+
+	// take a file from the jar
 	private static void copyFromJar(String f,File t) throws IOException{
 		InputStream stream = Main.class.getResourceAsStream(f);
 	    if (stream == null) {
@@ -64,8 +68,8 @@ public class Result {
 	    }
 	}
 
+  // generic file copy
 	public static void copyFile( File from, File to ) throws IOException {
-
 		if ( !to.exists() ) { to.createNewFile(); }
 
 		try (
@@ -75,24 +79,33 @@ public class Result {
 			out.transferFrom( in, 0, in.size() );
 		}
 	}
+
+	// copy a file either form the jar or from a special resources directory
+	public static void copyResource(String f, File to) throws IOException {
+		try {
+				/* try jar first ... */
+			copyFromJar("/resources/" + f, to);
+		} catch (IOException e){
+				/* .. no? This means that we are debugging in an IDE? */
+			copyFile(new File("../resources/"+f), to);
+		}
+	}
+
+	// create a result object and prepare its directories
 	public Result(String resDir) throws IOException {
 		prepareDirectories(resDir);
 		for (String f : Config.preparedFiles){
-			try {
-				/* try jar first ... */
-				copyFromJar("/resources/" + f, new File(resDir, f));
-			} catch (IOException e){
-				/* .. no? This means that we are debugging in an IDE? */
-				copyFile(new File("../resources/"+f),new File(resDir, f));
-			}
-		}		
+			copyResource(f,new File(resDir,f));
+		}
 	}
 
+	// return a listing file to be created
 	public File getListingFile(String file) {
-		File f = new File(filDir, file+".html");
+		File f = new File(filDir, file+".xml");
 		return f;
 	}
 
+	// return a svg file to be created
 	public File getSvgFile(String file, String fun) {
 		File dir = new File(cfgDir,file) ;
 		dir.mkdir();
@@ -100,20 +113,25 @@ public class Result {
 		return f;
 	}
 
+	// return a node file to be created
 	public File getNodeFile(String node) {
 		File f = new File(nodDir,node+".xml");
 		return f;
 	}
 
+	// return a warnings file to be created
 	public File getWarningFile(String war) {
 		File f = new File(warDir,war+".xml");
 		return f;
 	}
 
+	// return a globals file to be created
 	public File getGlobalFile() {
 		File f = new File(nodDir,"globals.xml");
 		return f;
 	}
+
+	// return a report file to be created
 	public File getReportFile() {
 		File f = new File(resDir,"index.xml");
 		return f;

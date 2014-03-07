@@ -1,67 +1,91 @@
 package g2html;
 
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.*;
+import java.util.Set;
 
-public class ProcessCfile extends Thread {
-	private static String pre =
-					"<html>\n<head>\n  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:400,500' rel='stylesheet' type='text/css' /> \n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n  <link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"></link>\n</head>\n<body>\n  <div class=\"source-block\">";
-	private static String post =
-					"</div></body></html>";
-
-	private static String ln1 = "<div id=\"line";
-	private static String ln2 = "\" class=\"source-line\"><span class=\"source-line-nr\">";
-	private static String ln3 = "</span><span class=\"source-line-warn\"></span><span class=\"source-line-data\">";
-	private static String ln4 = "</span></div>";
-
+public class ProcessCfile implements Runnable {
 	private File to;
+	private FileStats stats;
 	private File from;
 
-	ProcessCfile(File from, File to) {
+	// allocate a new transformation task
+	ProcessCfile(File from, File to, FileStats stats) {
 		super();
 		this.from = from;
 		this.to = to;
+		this.stats = stats;
 	}
 
-	public static void encodeHTMLAppend(String s, FileWriter out) throws IOException {
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (c > 127 || c == '"' || c == '<' || c == '>') {
-				out.append("&#" + (int) c + ";");
-			} else {
-				out.append(c);
-			}
+	// write the set as an JSON string array
+	static String setToJsonArray(Set<String> s){
+		if (s==null) return "[]";
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("[");
+		boolean first = true;
+		for (String e : s){
+			if (!first)
+				stringBuilder.append(", ");
+			first = false;
+			stringBuilder.append("\"");
+			stringBuilder.append(e);
+			stringBuilder.append("\"");
 		}
+		stringBuilder.append("]");
+		return stringBuilder.toString();
 	}
 
+	
 	@Override
 	public void run() {
-		super.run();
+		Log.printf("Starting:%s.\n", from.getPath());
+
+		// do nothing if the input file cannot be found
 		if (from!=null && from.exists()) {
 			try {
-				FileWriter fw = new FileWriter(to);
-				fw.append(pre);
-				fw.append("\n");
+				// open the output stream
+				XMLOutputFactory outFactory = XMLOutputFactory.newInstance();
+				XMLStreamWriter sw = outFactory.createXMLStreamWriter(new FileOutputStream(to));
+				// write the preamble
+				sw.writeStartDocument();
+  			sw.writeCharacters("\n");
+ 	  		sw.writeProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"../file.xsl\"");
+				sw.writeCharacters("\n");
+				sw.writeStartElement("file");
+				sw.writeCharacters("\n");
+
+				// for each line write a ln tag with line number, nodes, warnings, and reachability
 				int lineNr = 1;
 				try (BufferedReader br = new BufferedReader(new FileReader(from))) {
 					for (String line; (line = br.readLine()) != null; ) {
-						fw.append(ln1);
-						fw.append("" + lineNr);
-						fw.append(ln2);
-						fw.append("" + lineNr);
-						fw.append(ln3);
-						encodeHTMLAppend(line, fw);
-						fw.append(ln4);
-						fw.append("\n");
+						sw.writeStartElement("ln");
+						sw.writeAttribute("nr" , Integer.toString(lineNr));
+						sw.writeAttribute("ns" , setToJsonArray(stats.getLineData(lineNr)));
+						sw.writeAttribute("wrn", setToJsonArray(stats.getWarnData(lineNr)));
+						sw.writeAttribute("ded", Boolean.toString(stats.isDead(lineNr)));
+						sw.writeCharacters(line);
+						sw.writeEndElement();
+						sw.writeCharacters("\n");
 						lineNr++;
 					}
 				}
-				fw.append(post);
-				fw.append("\n");
-				fw.close();
+
+				// close the stream
+				sw.writeEndElement();
+				sw.writeEndDocument();
+				sw.close();
+
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+
+			} catch (XMLStreamException e) {
+				e.printStackTrace();
+  		}
+
 		}
+		Log.printf("Finished:%s.\n", from.getPath());
 	}
 
 }

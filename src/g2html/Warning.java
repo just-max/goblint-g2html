@@ -9,34 +9,48 @@ import java.util.logging.Logger;
 public class Warning {
 	private static int counter = 1;
 
-	static public void parseWarningNode(XMLStreamReader parser, Result res, ResultStats resultStats) throws XMLStreamException, FileNotFoundException {
+	// parse a wwarning node
+	static public void parseWarningNode(XMLStreamReader parser, Result res, ResultStats resultStats)
+					throws XMLStreamException, FileNotFoundException {
+
+		// create a new id for the new warning
 		String id = "warn"+counter;
 		counter++;
 
+		// open the output stream
 		File xmlOut = res.getWarningFile(id);
 		XMLOutputFactory factory = XMLOutputFactory.newInstance();
 		XMLStreamWriter xmlOutStream = factory.createXMLStreamWriter(new FileOutputStream(xmlOut));
+
+		// write the preamble
 		xmlOutStream.writeStartDocument();
 		xmlOutStream.writeCharacters("\n");
 		xmlOutStream.writeProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"../warn.xsl\"");
 		xmlOutStream.writeCharacters("\n");
-		XMLStreamCC readcc = new XMLStreamCC(parser,xmlOutStream);
 
+		// copy form the input
+		XMLStreamCC readcc = new XMLStreamCC(parser,xmlOutStream);
 		while(readcc.hasNext()){
+
+			// until the warning tag closes
 			if (readcc.getEventType()== XMLStreamConstants.END_ELEMENT &&
 							readcc.getLocalName()=="warning"){
 				break;
 			}
 
+			// for each text element, store the id of the warning with the text location
 			if (readcc.getEventType()== XMLStreamConstants.START_ELEMENT &&
 							readcc.getLocalName()=="text"){
 				String file = readcc.getAttributeValue("","file");
 				String line = readcc.getAttributeValue("","line");
 				String shortFile = new File(file).getName();
+
 				resultStats.getStats(shortFile).addWarning(id,Integer.valueOf(line));
 			}
 			readcc.next();
 		}
+
+		// close the document
 		xmlOutStream.writeEndDocument();
 		xmlOutStream.close();
 	}

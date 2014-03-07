@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="build" name="g2html">
-    <property environment="env"/>
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.7"/>
-    <property name="source" value="1.7"/>
-    <path id="g2html.classpath">
-        <pathelement location="bin"/>
-    </path>
-    <target name="init">
-        <mkdir dir="bin"/>
-        <mkdir dir="bin/resources"/>
-        <copy includeemptydirs="false" todir="bin/resources">
-            <fileset dir="resources" />
-        </copy>
-    </target>
-    <target name="clean">
-        <delete dir="bin"/>
-    </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="init" name="build">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-            <src path="src"/>
-            <classpath refid="g2html.classpath"/>
-        </javac>
-    </target>
+	<property environment="env"/>
+	<property name="debuglevel" value="source,lines,vars"/>
+	<property name="target" value="1.7"/>
+	<property name="source" value="1.7"/>
+	<path id="g2html.classpath">
+		<pathelement location="bin"/>
+	</path>
+	<path id="external.classpath">
+		<pathelement location="libs/jewelcli-0.8.9.jar"/>
+	</path>
+	<target name="init">
+		<mkdir dir="bin"/>
+		<mkdir dir="bin/resources"/>
+		<copy includeemptydirs="false" todir="bin/resources">
+			<fileset dir="resources" />
+		</copy>
+	</target>
+	<target name="clean">
+		<delete dir="bin"/>
+	</target>
+	<target depends="clean" name="cleanall"/>
+	<target depends="init" name="build">
+		<echo message="${ant.project.name}: ${ant.file}"/>
+		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+			<src path="src"/>
+			<classpath refid="g2html.classpath"/>
+			<classpath>
+				<path refid="external.classpath" />
+			</classpath>
+		</javac>
+	</target>
 	<target depends="build" name="jar">
-	 <jar destfile="g2html.jar"
-	       basedir="bin">
-	 	<manifest>
-	 		<attribute name="Main-Class" value="g2html.Main"/>
-	 	</manifest>
-	 </jar>
+		<jar destfile="g2html.jar"
+		     basedir="bin">
+			<zipgroupfileset dir="libs" includes="*.jar" excludes=""/>
+			<manifest>
+				<attribute name="Main-Class" value="g2html.Main"/>
+				<attribute name="Class-Path" value="$libs/jewelcli-0.8.9.jar"/>
+			</manifest>
+		</jar>
 	</target>
 </project>

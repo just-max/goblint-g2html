@@ -6,17 +6,20 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.util.StreamReaderDelegate;
 
+// Useful for copying portions of xml files to other files
 public class XMLStreamCC extends StreamReaderDelegate {
 	private final XMLStreamReader reader;
 	private final XMLStreamWriter writer;
 
-	XMLStreamCC(XMLStreamReader reader, XMLStreamWriter writer) throws XMLStreamException {
+	// creates a XMLStreamReader that copies all read elements into a writer
+	XMLStreamCC(XMLStreamReader reader, XMLStreamWriter writer)
+					throws XMLStreamException
+	{
 		super(reader);
 		this.reader = reader;
 		this.writer = writer;
 		copyTag();
 	}
-
 
 	public static void copyAttributes(XMLStreamReader reader, XMLStreamWriter writer)
 					throws XMLStreamException {

@@ -10,13 +10,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+// result stats encapsulates all databases for all files
 public class ResultStats {
 	private Map<String,FileStats> fm;
-	
+
+	// create a map of databases
 	public ResultStats(){
 		fm = new TreeMap<>();
 	}
-	
+
+	// return (and possibly allocate) a nw database for the file
 	public FileStats getStats(String s){
 		FileStats fs = fm.get(s);
 		if (fs==null){
@@ -26,28 +29,35 @@ public class ResultStats {
 		return fs;
 	}
 
+	// return the set of all files
 	public Set<String> allFiles(){
 		return fm.keySet();
 	}
 	
-	public void printJson(Result r) throws IOException{
-		for(String s : fm.keySet()){
-			fm.get(s).printJson(new File(r.filDir, s + ".json"));
-		}
-	}
-	public void printReport(Result r) throws IOException, XMLStreamException {
+	// prepare the report
+	public void printReport(Result r)
+					throws IOException, XMLStreamException {
+
+		// open the output xml stream
 		XMLOutputFactory outFactory = XMLOutputFactory.newInstance();
 		XMLStreamWriter report = outFactory.createXMLStreamWriter(new FileOutputStream(r.getReportFile()));
+
+		// write the preamble
 		report.writeStartDocument();
 		report.writeCharacters("\n");
 		report.writeProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"report.xsl\"");
 		report.writeCharacters("\n");
 		report.writeStartElement("report");
 
+		// for each file
 		for(String file : fm.keySet()){
+			// write the file-name
 			report.writeStartElement("file");
-			report.writeAttribute("name", file);	
+			report.writeAttribute("name", file);
+			
+			// for each function
 			for (String fun : fm.get(file).getFunctions()){
+				// write the function name
 				report.writeStartElement("function");
 				report.writeAttribute("name", fun);
 				report.writeEndElement();
@@ -55,6 +65,8 @@ public class ResultStats {
 
 			report.writeEndElement();
 		}
+
+		// close the stream
 		report.writeEndElement();
 		report.writeEndDocument();
 		report.close();

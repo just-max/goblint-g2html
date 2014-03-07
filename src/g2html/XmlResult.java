@@ -1,9 +1,7 @@
 package g2html;
 
 import javax.xml.stream.*;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.logging.Logger;
 
 public class XmlResult {
@@ -13,10 +11,13 @@ public class XmlResult {
 		try {
 			// Open xml file
 			XMLInputFactory factory = XMLInputFactory.newInstance();
-			XMLStreamReader parser = factory.createXMLStreamReader(new FileInputStream(Config.xmlFileName));
+			XMLStreamReader parser = factory.createXMLStreamReader(new BufferedInputStream(new FileInputStream(Config.conf.getFile())));
 
+		  // prepare the globals file with the globs root node
 			XMLOutputFactory outFactory = XMLOutputFactory.newInstance();
-			XMLStreamWriter  globalStream = outFactory.createXMLStreamWriter(new FileOutputStream(res.getGlobalFile()));
+			XMLStreamWriter  globalStream = outFactory.createXMLStreamWriter(new BufferedOutputStream(new FileOutputStream(res.getGlobalFile())));
+
+			// preamble for the globals file
 			globalStream.writeStartDocument();
 			globalStream.writeCharacters("\n");
 			globalStream.writeProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"../globals.xsl\"");
@@ -29,6 +30,7 @@ public class XmlResult {
 					case XMLStreamConstants.START_ELEMENT:
 						String elementName = parser.getLocalName();
 
+						// use the specialized parser when possible
 						if (elementName.equals("file"))    Structure.parseFileNode(parser, resultStats);
 						if (elementName.equals("loc"))     Loc.parseLocNode(parser,res,resultStats);
 						if (elementName.equals("glob"))    Glob.parseGlobNode(parser, globalStream);
@@ -42,6 +44,8 @@ public class XmlResult {
 				// Next event
 				parser.next();
 			}
+
+			// close the globals document
 			globalStream.writeEndElement();
 			globalStream.writeEndDocument();
 			globalStream.close();
