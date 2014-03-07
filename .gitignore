@@ -1,10 +1,10 @@
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
+g2html.jar
 .idea
 bin
 test_dir
