@@ -33,6 +33,9 @@ public class Config {
 		@Option (shortName = "v", description = "Verbose output.")
 		boolean verbose();
 
+		@Option (shortName = "sh", defaultValue = "on", exactly = 1, description = "Syntax highlighting on/off.")
+		String getSyntaxHighlightingStatus();
+
 		@Unparsed(description = "input xml file", defaultToNull = false,exactly = 1,name = "<xml file>")
 		String getFile();
 	}
