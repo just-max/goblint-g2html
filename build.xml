@@ -17,6 +17,12 @@
 			<fileset dir="resources" />
 		</copy>
 	</target>
+	<target name="rebuild_lexer">
+		<exec executable="jflex" dir="src/g2html">
+			<arg value="CTokens.flex"/>
+			<arg value="--nobak" />
+		</exec>
+	</target>
 	<target name="clean">
 		<delete dir="bin"/>
 	</target>
