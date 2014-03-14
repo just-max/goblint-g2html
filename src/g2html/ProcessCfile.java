@@ -159,6 +159,8 @@ public class ProcessCfile implements Runnable {
 							kind_wrap_start(s.k,sw);
 							sw.writeCharacters(s.s);
 							kind_wrap_end(s.k, sw);
+							if (s.k == Kind.STRING_CONT || s.k == Kind.COMMENT_CONT)
+								break;
 						} while (true);
 
 						sw.writeEndElement();

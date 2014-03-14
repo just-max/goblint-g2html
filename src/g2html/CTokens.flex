@@ -194,7 +194,9 @@ Number  = {FloatLiteral} | {DoubleLiteral} | {DecIntegerLiteral} | {DecLongLiter
 <STRING> {                                   
   \"                                         { yybegin(YYINITIAL); string.append("\""); return symbol(Kind.STRING, string.toString()); }
   [^\"\n\r]*                                 { string.append( yytext() ); }
-  {LineTerminator}                           { return symbol(Kind.STRING_CONT, string.toString()); }
+  {LineTerminator}                           { String tmp = string.toString();
+                                               string.setLength(0);
+                                               return symbol(Kind.STRING_CONT, tmp); }
 }                                            
                                              
                                              
@@ -202,7 +204,9 @@ Number  = {FloatLiteral} | {DoubleLiteral} | {DecIntegerLiteral} | {DecLongLiter
   "*/"                                       { yybegin(YYINITIAL); string.append("*/"); return symbol(Kind.COMMENT, string.toString()); }
   [^*\r\n]*                                  { string.append( yytext() ); }
   "*"[^/]                                    { string.append( yytext() ); }
-  {LineTerminator}                           { return symbol(Kind.COMMENT_CONT, string.toString()); }
+  {LineTerminator}                           { String tmp = string.toString();
+                                               string.setLength(0);
+                                               return symbol(Kind.COMMENT_CONT, tmp); }
 }                                            
                                              
 {InputCharacter}                             { return symbol(Kind.TEXT); }        
