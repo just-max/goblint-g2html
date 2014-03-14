@@ -9,9 +9,6 @@ package g2html;
 %function next_token1
 %type Symbol
 %unicode
-%char
-%line
-%column
 
 %{
 
