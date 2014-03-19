@@ -6,6 +6,8 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -53,7 +55,7 @@ public class ResultStats {
 		for(String file : fm.keySet()){
 			// write the file-name
 			report.writeStartElement("file");
-			report.writeAttribute("name", file);
+			report.writeAttribute("name", URLDecoder.decode(file,"UTF-8"));
 			
 			// for each function
 			for (String fun : fm.get(file).getFunctions()){

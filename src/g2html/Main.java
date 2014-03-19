@@ -46,13 +46,13 @@ public class Main {
 		ExecutorService executorService = Executors.newFixedThreadPool(6);
 
 		// Process found files/functions
-		for(String file : stats.allFiles()){
-			File cFile = stats.getStats(file).getCFile();
-			File listing = res.getListingFile(file);
+		for(String path : stats.allFiles()){
+			File cFile = stats.getStats(path).getCFile();
+			File listing = res.getListingFile(path);
 			// check if input data is available
 			if (cFile!=null && cFile.exists()){
 				// process the input
-				Runnable t = new ProcessCfile(cFile, listing, stats.getStats(file));
+				Runnable t = new ProcessCfile(cFile, listing, stats.getStats(path));
 				executorService.submit(t);
 			} else {
 				// or replace with a placeholder
@@ -65,9 +65,10 @@ public class Main {
 			}
 
 			// process the functions for the current file
-			for (String fun : stats.getStats(file).getFunctions()){
-				File svgFile = res.getSvgFile(file, fun);
-				File dotFile = Config.getFunDotFile(file, fun);
+			for (String fun : stats.getStats(path).getFunctions()){
+				File svgFile = res.getSvgFile(path, fun);
+				File dotFile = Config.getFunDotFile(path, fun);
+//				System.out.printf("dot file:%s\n",dotFile.toString());
 				// check if input data is available
 				if (dotFile.exists()){
 					// process the input
@@ -83,7 +84,7 @@ public class Main {
 					}
 				}
 			}
-			Log.printf("Done parsing '%s'.\n", file);
+			Log.printf("Done parsing '%s'.\n", path);
 		}
 
 		Log.printf("Done parsing source files.\n");

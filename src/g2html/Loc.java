@@ -1,10 +1,8 @@
 package g2html;
 
 import javax.xml.stream.*;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.logging.Logger;
 
 public class Loc {
@@ -19,7 +17,13 @@ public class Loc {
 		String id   = parser.getAttributeValue("", "id");
 
 		// compute the file-id from the full path
-		String shortFile = (new File(file)).getName();
+		String shortFile = null;
+		try {
+			shortFile = URLEncoder.encode(file, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			System.exit(255);
+		}
 
 		// look up the database for the file
 		FileStats fileStats = resultStats.getStats(shortFile);
@@ -60,8 +64,8 @@ public class Loc {
 			} else if (eventType==XMLStreamConstants.START_ELEMENT && readcc.getLocalName()=="analysis" && pathFound){
 				notDead = true;
 			}
-				// skip to the next event
-				readcc.next();
+			// skip to the next event
+			readcc.next();
 		}
 
 		// update reachability information for the file

@@ -3,6 +3,9 @@ package g2html;
 import com.lexicalscope.jewel.cli.*;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.file.Path;
 import java.util.List;
 
 public class Config {
@@ -70,8 +73,9 @@ public class Config {
 	}
 
 	// returns the input dot file for a given C file, and function
-	public static File getFunDotFile(String file, String fun) {
-		File f = new File(new File(new File(conf.getCfgDir()), file), fun + ".dot");
+	public static File getFunDotFile(String path, String fun) {
+		path = path.replaceAll(File.pathSeparator,"%2F");
+		File f = new File(new File(new File(conf.getCfgDir()), path), fun + ".dot");
 		return f;
 	}
 }
