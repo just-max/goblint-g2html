@@ -53,6 +53,8 @@ public class ResultStats {
 
 		// for each file
 		for(String file : fm.keySet()){
+			if (fm.get(file).getCFile()==null)
+				continue;
 			// write the file-name
 			report.writeStartElement("file");
 			report.writeAttribute("name", URLDecoder.decode(file,"UTF-8"));
