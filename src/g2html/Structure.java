@@ -3,6 +3,7 @@ package g2html;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -12,13 +13,7 @@ public class Structure {
 					throws XMLStreamException {
 
 		// get basic information
-		String name = null;
-		try {
-			name = URLEncoder.encode(parser.getAttributeValue("", "path"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			System.exit(255);
-		}
+		String name = parser.getAttributeValue("", "path").replaceAll(File.separator,"%2F");;
 		String fun = "";
 
 		// parse the file and

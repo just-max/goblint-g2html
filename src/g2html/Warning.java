@@ -41,9 +41,9 @@ public class Warning {
 			// for each text element, store the id of the warning with the text location
 			if (readcc.getEventType()== XMLStreamConstants.START_ELEMENT &&
 							readcc.getLocalName()=="text"){
-				String file = readcc.getAttributeValue("","file");
+				String path = readcc.getAttributeValue("","file");
 				String line = readcc.getAttributeValue("","line");
-				String shortFile = new File(file).getName();
+				String shortFile = path.replaceAll(File.separator,"%2F");;
 
 				resultStats.getStats(shortFile).addWarning(id,Integer.valueOf(line));
 			}

@@ -57,7 +57,7 @@ public class ResultStats {
 				continue;
 			// write the file-name
 			report.writeStartElement("file");
-			report.writeAttribute("name", URLDecoder.decode(file,"UTF-8"));
+			report.writeAttribute("name", file.replaceAll("%2F",File.separator));
 			
 			// for each function
 			for (String fun : fm.get(file).getFunctions()){

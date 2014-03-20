@@ -71,7 +71,7 @@ public class Config {
 
 	// returns the input dot file for a given C file, and function
 	public static File getFunDotFile(String path, String fun) {
-		path = path.replaceAll(File.pathSeparator,"%2F");
+		path = path.replaceAll(File.separator,"%2F");
 		File f = new File(new File(new File(conf.getCfgDir()), path), fun + ".dot");
 		return f;
 	}

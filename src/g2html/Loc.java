@@ -17,13 +17,7 @@ public class Loc {
 		String id   = parser.getAttributeValue("", "id");
 
 		// compute the file-id from the full path
-		String shortFile = null;
-		try {
-			shortFile = URLEncoder.encode(file, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			System.exit(255);
-		}
+		String shortFile = file.replaceAll(File.separator,"%2F");
 
 		// look up the database for the file
 		FileStats fileStats = resultStats.getStats(shortFile);

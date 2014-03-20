@@ -64,7 +64,9 @@ public class Result {
 	        }
 	    } finally {
 	        stream.close();
-	        resStreamOut.close();
+			    if (resStreamOut != null) {
+				    resStreamOut.close();
+			    }
 	    }
 	}
 
@@ -100,8 +102,9 @@ public class Result {
 	}
 
 	// return a listing file to be created
-	public File getListingFile(String file) {
-		File f = new File(filDir, file+".xml");
+	public File getListingFile(String path) {
+		path = path.replaceAll(File.separator,"%2F");
+		File f = new File(filDir, path+".xml");
 		return f;
 	}
 
