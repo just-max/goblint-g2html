@@ -13,6 +13,8 @@ public class FileStats {
 	// set of functions that we know are in the file
 	private Set<String>                  functions;
 	// Lines that are definitely unreachable
+	private Set<Integer>                 liveLines;
+	// mapping nodes to function names
 	private Set<Integer>                 deadLines;
 	// mapping nodes to function names
 	private Map<String,String>           nodeToFunction;
@@ -27,6 +29,7 @@ public class FileStats {
 	FileStats(){
 		functions = new TreeSet<>();
 		deadLines = new TreeSet<>();
+		liveLines = new TreeSet<>();
 		nodeToFunction = new TreeMap<>();
 		lineData = new TreeMap<>();
 		warnData = new TreeMap<>();
@@ -50,9 +53,14 @@ public class FileStats {
 		return cFile;
 	}
 
-	// mark line as dead
+	// line contains dead nodes
 	void addDead(int i){
 		deadLines.add(i);
+	}
+
+	// line contains live nodes
+	void addLive(int i){
+		liveLines.add(i);
 	}
 
 	// add another function
@@ -112,5 +120,9 @@ public class FileStats {
 	// returns the functions of the file
 	public Set<String> getFunctions() {
 		return functions;
+	}
+
+	public boolean isLive(int lineNr) {
+		return liveLines.contains(lineNr);
 	}
 }

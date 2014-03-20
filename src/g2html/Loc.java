@@ -69,8 +69,12 @@ public class Loc {
 		}
 
 		// update reachability information for the file
-		if (!notDead)
+		if (notDead) {
+			resultStats.getStats(shortFile).addLive(Integer.parseInt(line));
+		} else {
 			resultStats.getStats(shortFile).addDead(Integer.parseInt(line));
+		}
+
 
 		// close the stream
 		xmlOutStream.writeEndDocument();

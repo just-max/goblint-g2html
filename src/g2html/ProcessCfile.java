@@ -149,7 +149,7 @@ public class ProcessCfile implements Runnable {
 						sw.writeAttribute("nr" , Integer.toString(lineNr));
 						sw.writeAttribute("ns" , setToJsonArray(stats.getLineData(lineNr)));
 						sw.writeAttribute("wrn", setToJsonArray(stats.getWarnData(lineNr)));
-						sw.writeAttribute("ded", Boolean.toString(stats.isDead(lineNr)));
+						sw.writeAttribute("ded", Boolean.toString(stats.isDead(lineNr) && (!stats.isLive(lineNr))));
 
 						CTokens.Symbol s;
 						do {
