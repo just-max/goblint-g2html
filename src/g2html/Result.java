@@ -85,12 +85,13 @@ public class Result {
 
 	// copy a file either form the jar or from a special resources directory
 	public static void copyResource(String f, File to) throws IOException {
+		String basePath = File.separator + "resources" + File.separator;
 		try {
 				/* try jar first ... */
-			copyFromJar("/resources/" + f, to);
+			copyFromJar(basePath + f, to);
 		} catch (IOException e){
 				/* .. no? This means that we are debugging in an IDE? */
-			copyFile(new File("../resources/"+f), to);
+			copyFile(new File(".."+basePath+f), to);
 		}
 	}
 
