@@ -73,6 +73,7 @@ public class Result {
 
   // generic file copy
 	public static void copyFile( File from, File to ) throws IOException {
+		System.out.printf("copy resource from '%s' to '%s'\n", from, to);
 		if ( !to.exists() ) { to.createNewFile(); }
 
 		try (
@@ -85,13 +86,12 @@ public class Result {
 
 	// copy a file either form the jar or from a special resources directory
 	public static void copyResource(String f, File to) throws IOException {
-		String basePath = File.separator + "resources" + File.separator;
 		try {
 				/* try jar first ... */
-			copyFromJar(basePath + f, to);
+			copyFromJar("/resources/" + f, to);
 		} catch (IOException e){
 				/* .. no? This means that we are debugging in an IDE? */
-			copyFile(new File(".."+basePath+f), to);
+			copyFile(new File(".."+File.separator + "resources" + File.separator+f), to);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class Result {
 
 	// return a listing file to be created
 	public File getListingFile(String path) {
-		path = path.replaceAll(Pattern.quote(File.separator),"%2F");
+		path = path.replaceAll("/","%2F");
 		File f = new File(filDir, path+".xml");
 		return f;
 	}

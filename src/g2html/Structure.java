@@ -14,7 +14,7 @@ public class Structure {
 					throws XMLStreamException {
 
 		// get basic information
-		String name = parser.getAttributeValue("", "path").replaceAll(Pattern.quote(File.separator),"%2F");;
+		String name = parser.getAttributeValue("", "path").replaceAll("/", "%2F");;
 		String fun = "";
 
 		// parse the file and

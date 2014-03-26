@@ -59,7 +59,7 @@ public class ResultStats {
 				continue;
 			// write the file-name
 			report.writeStartElement("file");
-			report.writeAttribute("name", file.replaceAll("%2F", Matcher.quoteReplacement(File.separator)));
+			report.writeAttribute("name", file.replaceAll("%2F", "/"));
 			
 			// for each function
 			for (String fun : fm.get(file).getFunctions()){

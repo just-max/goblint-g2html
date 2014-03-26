@@ -44,7 +44,7 @@ public class Warning {
 							readcc.getLocalName()=="text"){
 				String path = readcc.getAttributeValue("","file");
 				String line = readcc.getAttributeValue("","line");
-				String shortFile = path.replaceAll(Pattern.quote(File.separator),"%2F");;
+				String shortFile = path.replaceAll("/", "%2F");
 
 				resultStats.getStats(shortFile).addWarning(id,Integer.valueOf(line));
 			}

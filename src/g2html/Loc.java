@@ -18,7 +18,7 @@ public class Loc {
 		String id   = parser.getAttributeValue("", "id");
 
 		// compute the file-id from the full path
-		String shortFile = file.replaceAll(Pattern.quote(File.separator),"%2F");
+		String shortFile = file.replaceAll("/", "%2F");
 
 		// look up the database for the file
 		FileStats fileStats = resultStats.getStats(shortFile);
