@@ -11,6 +11,8 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // result stats encapsulates all databases for all files
 public class ResultStats {
@@ -57,7 +59,7 @@ public class ResultStats {
 				continue;
 			// write the file-name
 			report.writeStartElement("file");
-			report.writeAttribute("name", file.replaceAll("%2F",File.separator));
+			report.writeAttribute("name", file.replaceAll("%2F", Matcher.quoteReplacement(File.separator)));
 			
 			// for each function
 			for (String fun : fm.get(file).getFunctions()){

@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.regex.Pattern;
 
 public class Structure {
 	// read the structure from the xml and store it in the databases
@@ -13,7 +14,7 @@ public class Structure {
 					throws XMLStreamException {
 
 		// get basic information
-		String name = parser.getAttributeValue("", "path").replaceAll(File.separator,"%2F");;
+		String name = parser.getAttributeValue("", "path").replaceAll(Pattern.quote(File.separator),"%2F");;
 		String fun = "";
 
 		// parse the file and

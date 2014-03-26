@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class Warning {
 	private static int counter = 1;
@@ -43,7 +44,7 @@ public class Warning {
 							readcc.getLocalName()=="text"){
 				String path = readcc.getAttributeValue("","file");
 				String line = readcc.getAttributeValue("","line");
-				String shortFile = path.replaceAll(File.separator,"%2F");;
+				String shortFile = path.replaceAll(Pattern.quote(File.separator),"%2F");;
 
 				resultStats.getStats(shortFile).addWarning(id,Integer.valueOf(line));
 			}

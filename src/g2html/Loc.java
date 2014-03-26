@@ -4,6 +4,7 @@ import javax.xml.stream.*;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class Loc {
 
@@ -17,7 +18,7 @@ public class Loc {
 		String id   = parser.getAttributeValue("", "id");
 
 		// compute the file-id from the full path
-		String shortFile = file.replaceAll(File.separator,"%2F");
+		String shortFile = file.replaceAll(Pattern.quote(File.separator),"%2F");
 
 		// look up the database for the file
 		FileStats fileStats = resultStats.getStats(shortFile);

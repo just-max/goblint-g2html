@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Config {
 	// default subdirectory names in the result
@@ -71,7 +72,7 @@ public class Config {
 
 	// returns the input dot file for a given C file, and function
 	public static File getFunDotFile(String path, String fun) {
-		path = path.replaceAll(File.separator,"%2F");
+		path = path.replaceAll(Pattern.quote(File.separator),"%2F");
 		File f = new File(new File(new File(conf.getCfgDir()), path), fun + ".dot");
 		return f;
 	}

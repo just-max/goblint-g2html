@@ -2,6 +2,7 @@ package g2html;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.util.regex.Pattern;
 
 // handles the result directory structure
 public class Result {
@@ -103,7 +104,7 @@ public class Result {
 
 	// return a listing file to be created
 	public File getListingFile(String path) {
-		path = path.replaceAll(File.separator,"%2F");
+		path = path.replaceAll(Pattern.quote(File.separator),"%2F");
 		File f = new File(filDir, path+".xml");
 		return f;
 	}
