@@ -48,7 +48,10 @@ public class Loc {
 			int eventType = readcc.getEventType();
 			// add function name to the loc xml-node
 			if (eventType==XMLStreamConstants.START_ELEMENT && readcc.getLocalName()=="loc"){
-				xmlOutStream.writeAttribute("fun",fileStats.getNodeFun(id));
+				String funName = fileStats.getNodeFun(id);
+				if (null==funName)
+					funName = "unknown";
+				xmlOutStream.writeAttribute("fun",funName);
 			// stop at the conclusion of the loc xml-node
 			} else if (eventType==XMLStreamConstants.END_ELEMENT && readcc.getLocalName()=="loc"){
 				break;
