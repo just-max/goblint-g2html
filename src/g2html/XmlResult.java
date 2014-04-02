@@ -9,6 +9,8 @@ public class XmlResult {
 	static public ResultStats parse(Result res) throws IOException {
 		ResultStats resultStats = new ResultStats();
 		try {
+			FileWriter lostAndFound = new FileWriter(new File(new File(Config.conf.getResultDir(), Config.nodesSubdir),"lost.txt"));
+
 			// Open xml file
 			XMLInputFactory factory = XMLInputFactory.newInstance();
 			XMLStreamReader parser = factory.createXMLStreamReader(new BufferedInputStream(new FileInputStream(Config.conf.getFile())));
@@ -32,7 +34,7 @@ public class XmlResult {
 
 						// use the specialized parser when possible
 						if (elementName.equals("file"))    Structure.parseFileNode(parser, resultStats);
-						if (elementName.equals("loc"))     Loc.parseLocNode(parser,res,resultStats);
+						if (elementName.equals("loc"))     Loc.parseLocNode(parser,res,resultStats,lostAndFound);
 						if (elementName.equals("glob"))    Glob.parseGlobNode(parser, globalStream);
 						if (elementName.equals("warning")) Warning.parseWarningNode(parser, res, resultStats);
 						break;
@@ -49,6 +51,7 @@ public class XmlResult {
 			globalStream.writeEndElement();
 			globalStream.writeEndDocument();
 			globalStream.close();
+			lostAndFound.close();
 
 		} catch (XMLStreamException xmle) {
 			System.out.println("XML Error: " + xmle.toString());

@@ -10,7 +10,7 @@ public class Loc {
 
 	// parsing a local node means copying the value into its own file
 	// but also remembering some details (reachability, line data, file path)
-	static public void parseLocNode(XMLStreamReader parser, Result res, ResultStats resultStats) throws FileNotFoundException, XMLStreamException {
+	static public void parseLocNode(XMLStreamReader parser, Result res, ResultStats resultStats, FileWriter lostAndFound) throws IOException, XMLStreamException {
 
 		// first copy basic information
 		String file = parser.getAttributeValue("", "file");
@@ -49,8 +49,10 @@ public class Loc {
 			// add function name to the loc xml-node
 			if (eventType==XMLStreamConstants.START_ELEMENT && readcc.getLocalName()=="loc"){
 				String funName = fileStats.getNodeFun(id);
-				if (null==funName)
+				if (null==funName) {
+					lostAndFound.append(id+"\n");
 					funName = "unknown";
+				}
 				xmlOutStream.writeAttribute("fun",funName);
 			// stop at the conclusion of the loc xml-node
 			} else if (eventType==XMLStreamConstants.END_ELEMENT && readcc.getLocalName()=="loc"){
