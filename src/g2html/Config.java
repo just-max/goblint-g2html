@@ -19,8 +19,17 @@ public class Config {
 	// JewelCli definitions for the configuration
 	@CommandLineInterface(application = "java -jar g2html.jar")
 	public interface G2HtmlArgs {
+		@Option (shortName = "n",longName = "num-threads", defaultValue = "2", exactly = 1,description = "Number of worker threads.")
+		Integer getNumThreads();
+
 		@Option (shortName = "d",longName = "dot-path", defaultValue = "dot", exactly = 1,description = "Path to the dot binary.")
 		String getDotPath();
+
+		@Option (longName = "dot-alternative-path", defaultValue = "sfdp", exactly = 1,description = "Path to an alternative dot binary.")
+		String getAlternativeDotPath();
+
+		@Option (longName = "dot-timeout", defaultValue = "2000", exactly = 1,description = "Timeout for graph processing (0 means no timeout).")
+		Integer getDotTimeout();
 
 		@Option (shortName = "c",longName = "cfg-dir", defaultValue = "cfgs", exactly = 1, description = "Path to 'exp.cfgdot' output directory.")
 		String getCfgDir();

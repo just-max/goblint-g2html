@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 // Useful for copying portions of xml files to other files
-public class XMLStreamCC extends StreamReaderDelegate {
+final public class XMLStreamCC extends StreamReaderDelegate {
 	private final XMLStreamReader reader;
 	private final XMLStreamWriter writer;
 
@@ -49,7 +49,7 @@ public class XMLStreamCC extends StreamReaderDelegate {
 				writer.writeCData(reader.getText());
 				break;
 			case XMLStreamConstants.CHARACTERS:
-				writer.writeCharacters(reader.getText());
+				writer.writeCharacters(reader.getTextCharacters(),reader.getTextStart(),reader.getTextLength());
 				break;
 			case XMLStreamConstants.COMMENT:
 				writer.writeComment(reader.getText());

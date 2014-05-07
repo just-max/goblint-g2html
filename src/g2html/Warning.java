@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-public class Warning {
+final public class Warning {
 	private static int counter = 1;
 
 	// parse a wwarning node
@@ -35,13 +35,13 @@ public class Warning {
 
 			// until the warning tag closes
 			if (readcc.getEventType()== XMLStreamConstants.END_ELEMENT &&
-							readcc.getLocalName()=="warning"){
+							readcc.getLocalName().equals("warning")){
 				break;
 			}
 
 			// for each text element, store the id of the warning with the text location
 			if (readcc.getEventType()== XMLStreamConstants.START_ELEMENT &&
-							readcc.getLocalName()=="text"){
+							readcc.getLocalName().equals("text")){
 				String path = readcc.getAttributeValue("","file");
 				String line = readcc.getAttributeValue("","line");
 				String shortFile = path.replaceAll("/", "%2F");

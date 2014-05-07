@@ -6,7 +6,7 @@ import java.net.URLEncoder;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-public class Loc {
+final public class Loc {
 
 	// parsing a local node means copying the value into its own file
 	// but also remembering some details (reachability, line data, file path)
@@ -30,6 +30,7 @@ public class Loc {
 		// open a stream for the node file
 		File xmlOut = res.getNodeFile(id);
 		XMLOutputFactory factory = XMLOutputFactory.newInstance();
+		factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, false);
 		XMLStreamWriter xmlOutStream = factory.createXMLStreamWriter(new BufferedOutputStream(new FileOutputStream(xmlOut)));
 
 		// write the header

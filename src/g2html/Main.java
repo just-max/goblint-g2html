@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Thread.sleep;
+
 public class Main {
 	public static void main(String[] args) {
 		// Load configuration (default settings and/or from file)
@@ -16,7 +18,7 @@ public class Main {
 
 		// Start
 		long startTime = System.currentTimeMillis();
-		System.out.println("Create html files ...");
+		Log.println("Create html files ...");
 		
 		// Generate files
 		Result res = null;
@@ -43,7 +45,7 @@ public class Main {
 		Log.println("Done parsing xml.");
 
 		// Thread pool for file processing tasks
-		ExecutorService executorService = Executors.newFixedThreadPool(6);
+		ExecutorService executorService = Executors.newFixedThreadPool(Config.conf.getNumThreads());
 
 		// Process found files/functions
 		for(String path : stats.allFiles()){

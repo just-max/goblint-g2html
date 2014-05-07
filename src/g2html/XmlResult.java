@@ -4,7 +4,7 @@ import javax.xml.stream.*;
 import java.io.*;
 import java.util.logging.Logger;
 
-public class XmlResult {
+final public class XmlResult {
 	// Parse the complete xml result file
 	static public ResultStats parse(Result res) throws IOException {
 		ResultStats resultStats = new ResultStats();

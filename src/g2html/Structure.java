@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
-public class Structure {
+final public class Structure {
 	// read the structure from the xml and store it in the databases
 	public static void parseFileNode(XMLStreamReader parser, ResultStats resultStats)
 					throws XMLStreamException {

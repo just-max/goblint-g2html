@@ -17,14 +17,13 @@ public class Result {
 	    if(directory.exists()){
 	        File[] files = directory.listFiles();
 	        if(null!=files){
-	            for(int i=0; i<files.length; i++) {
-	                if(files[i].isDirectory()) {
-	                    deleteDirectory(files[i]);
-	                }
-	                else {
-	                    files[i].delete();
-	                }
-	            }
+		        for (File file : files) {
+			        if (file.isDirectory()) {
+				        deleteDirectory(file);
+			        } else {
+				        file.delete();
+			        }
+		        }
 	        }
 	    }
 	    return(directory.delete());
@@ -73,7 +72,7 @@ public class Result {
 
   // generic file copy
 	public static void copyFile( File from, File to ) throws IOException {
-		System.out.printf("copy resource from '%s' to '%s'\n", from, to);
+		Log.printf("copy resource from '%s' to '%s'\n", from, to);
 		if ( !to.exists() ) { to.createNewFile(); }
 
 		try (
