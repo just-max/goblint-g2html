@@ -48,7 +48,7 @@ final public class Loc {
 		while(readcc.hasNext()){
 			int eventType = readcc.getEventType();
 			// add function name to the loc xml-node
-			if (eventType==XMLStreamConstants.START_ELEMENT && readcc.getLocalName()=="loc"){
+			if (eventType==XMLStreamConstants.START_ELEMENT && readcc.getLocalName() != null && readcc.getLocalName().equals("loc")){
 				String funName = fileStats.getNodeFun(id);
 				if (null==funName) {
 					lostAndFound.append(id+"\n");
