@@ -34,7 +34,7 @@ final public class XmlResult {
 
 						// use the specialized parser when possible
 						if (elementName.equals("file"))    Structure.parseFileNode(parser, resultStats);
-						if (elementName.equals("loc"))     Loc.parseLocNode(parser,res,resultStats,lostAndFound);
+						if (elementName.equals("call"))    Loc.parseLocNode(parser,res,resultStats,lostAndFound);
 						if (elementName.equals("glob"))    Glob.parseGlobNode(parser, globalStream);
 						if (elementName.equals("warning")) Warning.parseWarningNode(parser, res, resultStats);
 						break;
