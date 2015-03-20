@@ -1,8 +1,7 @@
 package g2html;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+import g2html.CTokens.Kind;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +12,9 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static g2html.CTokens.Kind;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 public class ProcessCfile implements Runnable {
 	private File to;

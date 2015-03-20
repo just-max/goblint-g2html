@@ -1,11 +1,14 @@
 package g2html;
 
-import javax.xml.stream.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
+
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
 final public class Warning {
 	private static int counter = 1;

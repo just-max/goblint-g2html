@@ -3,10 +3,6 @@ package g2html;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.regex.Pattern;
 
 final public class Structure {
 	// read the structure from the xml and store it in the databases

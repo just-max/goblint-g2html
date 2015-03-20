@@ -2,7 +2,6 @@ package g2html;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 class Worker extends Thread {
 	final Process process;

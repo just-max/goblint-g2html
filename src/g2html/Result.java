@@ -1,8 +1,12 @@
 package g2html;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
-import java.util.regex.Pattern;
 
 // handles the result directory structure
 public class Result {

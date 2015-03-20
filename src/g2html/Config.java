@@ -1,13 +1,14 @@
 package g2html;
 
-import com.lexicalscope.jewel.cli.*;
-
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.regex.Pattern;
+
+import com.lexicalscope.jewel.cli.ArgumentValidationException;
+import com.lexicalscope.jewel.cli.Cli;
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.CommandLineInterface;
+import com.lexicalscope.jewel.cli.Option;
+import com.lexicalscope.jewel.cli.Unparsed;
 
 public class Config {
 	// default subdirectory names in the result
