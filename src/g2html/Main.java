@@ -2,8 +2,7 @@ package g2html;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +43,7 @@ public class Main {
 			res = new Result(Config.conf.getResultDir());
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.printf("Error: Could not generate directory structure for the result.\n");
+			System.err.printf("Error: Could not generate directory structure for the result.\n");
 			System.exit(255);
 		}
 
@@ -56,7 +55,7 @@ public class Main {
 			stats = XmlResult.parse(res);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.printf("Error: Could not process the xml file.\n");
+			System.err.printf("Error: Could not process the xml file.\n");
 			System.exit(255);
 		}
 
@@ -114,11 +113,11 @@ public class Main {
 			stats.printReport(res);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.printf("Error: Could print report.\n");
+			System.err.printf("Error: Could not print report.\n");
 			System.exit(255);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
-			System.out.printf("Error: Could write report xml file.\n");
+			System.err.printf("Error: Could not write report xml file.\n");
 			System.exit(255);
 		}
 
@@ -135,12 +134,11 @@ public class Main {
 
 		Log.printf("Done waiting for threads.\n");
 
-		FileSystem fs = FileSystems.getDefault();
 		try {
-			move(fs.getPath(Config.conf.getCfgDir()), fs.getPath(Config.conf.getResultDir(), "dot"));
+			move(Paths.get(Config.conf.getCfgDir()), Paths.get(Config.conf.getResultDir(), "dot"));
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.printf("Error: Could not move cfgs to result/dot.\n");
+			System.err.printf("Error: Could not move cfgs to result/dot.\n");
 		}
 
 		// Finish (with process time)

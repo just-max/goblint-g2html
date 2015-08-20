@@ -1,12 +1,13 @@
 package g2html;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+
+import static java.nio.file.Files.copy;
 
 // handles the result directory structure
 public class Result {
@@ -41,7 +42,7 @@ public class Result {
 		
 		cfgDir = new File(resDir,Config.cfgSubdir);
 		if (!cfgDir.mkdir()) throw new IOException("prepareDirectories - cfgDir");
-		
+
 		filDir = new File(resDir,Config.sourceFilesSubdir);
 		if (!filDir.mkdir()) throw new IOException("prepareDirectories - filDir");
 
@@ -77,14 +78,7 @@ public class Result {
   // generic file copy
 	public static void copyFile( File from, File to ) throws IOException {
 		Log.printf("copy resource from '%s' to '%s'\n", from, to);
-		if ( !to.exists() ) { to.createNewFile(); }
-
-		try (
-						FileChannel in = new FileInputStream( from ).getChannel();
-						FileChannel out = new FileOutputStream( to ).getChannel() ) {
-
-			out.transferFrom( in, 0, in.size() );
-		}
+		copy(Paths.get(from.getPath()), Paths.get(to.getPath()));
 	}
 
 	// copy a file either form the jar or from a special resources directory

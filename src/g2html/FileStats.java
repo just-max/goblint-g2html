@@ -10,17 +10,17 @@ import java.util.TreeSet;
 public class FileStats {
 	// set of functions that we know are in the file
 	private Set<String>                  functions;
-	// Lines that are definitely unreachable
+	// lines that are definitely unreachable
 	private Set<Integer>                 liveLines;
-	// mapping nodes to function names
+	// map nodes to function names
 	private Set<Integer>                 deadLines;
-	// mapping nodes to function names
+	// map nodes to function names
 	private Map<String,String>           nodeToFunction;
 	// map lines to nodes
 	private Map<Integer,TreeSet<String>> lineData;
 	// map lines to warning nodes
 	private Map<Integer,TreeSet<String>> warnData;
-	// the fine object (contains the path)
+	// the file object (contains the path)
 	private File                         cFile;
 
 	// construct an empty database
