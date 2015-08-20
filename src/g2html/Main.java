@@ -2,6 +2,8 @@ package g2html;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import javax.xml.stream.XMLStreamException;
 
 import fi.iki.elonen.NanoHTTPD;
+
+import static java.nio.file.Files.move;
 
 public class Main {
 	public static void main(String[] args) {
@@ -130,6 +134,14 @@ public class Main {
 		}
 
 		Log.printf("Done waiting for threads.\n");
+
+		FileSystem fs = FileSystems.getDefault();
+		try {
+			move(fs.getPath(Config.conf.getCfgDir()), fs.getPath(Config.conf.getResultDir(), "dot"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.printf("Error: Could not move cfgs to result/dot.\n");
+		}
 
 		// Finish (with process time)
 		long finishTime = System.currentTimeMillis();
