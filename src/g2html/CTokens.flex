@@ -200,7 +200,11 @@ Number  = {FloatLiteral} | {DoubleLiteral} | {DecIntegerLiteral} | {DecLongLiter
 <COMMENT> {                                  
   "*/"                                       { yybegin(YYINITIAL); string.append("*/"); return symbol(Kind.COMMENT, string.toString()); }
   [^*\r\n]*                                  { string.append( yytext() ); }
-  "*"[^/]                                    { string.append( yytext() ); }
+  "*"[^/\n]                                  { string.append( yytext() ); }
+  "*\n"                                      { string.append("*");
+                                               String tmp = string.toString();
+                                               string.setLength(0);
+                                               return symbol(Kind.COMMENT_CONT, tmp); }
   {LineTerminator}                           { String tmp = string.toString();
                                                string.setLength(0);
                                                return symbol(Kind.COMMENT_CONT, tmp); }
