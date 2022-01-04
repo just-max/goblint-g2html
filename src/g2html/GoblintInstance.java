@@ -61,10 +61,7 @@ public class GoblintInstance implements Runnable {
 
 	@Override
 	public void run() {
-		StringBuilder command = new StringBuilder("./goblint --sets interact.out ");
-		command.append(instNr);
-		command.append(" --set interact.enabled true");
-		command.append(" --set interact.paused true ");
+		StringBuilder command = new StringBuilder("./goblint");
 		command.append(params);
 		System.out.printf("Command: %s\n",command.toString());
 		try {
