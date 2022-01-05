@@ -20,8 +20,6 @@ public class Config {
 	// JewelCli definitions for the configuration
 	@CommandLineInterface(application = "java -jar g2html.jar")
 	public interface G2HtmlArgs {
-		@Option (longName = "server", description = "Start in server mode and spawn Goblint instances as needed.")
-		boolean serverMode();
 
 		@Option (shortName = "n",longName = "num-threads", defaultValue = "2", exactly = 1,description = "Number of worker threads.")
 		Integer getNumThreads();

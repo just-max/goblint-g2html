@@ -18,25 +18,10 @@ public class Main {
 		// Load configuration (default settings and/or from file)
 		Config.load(args);
 
-		if (Config.conf.serverMode()) {
-			System.out.println("Running as a server ...");
-			NanoHTTPD server = new GoblintServer(8080);
-			try {
-				server.start();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			while (server.isAlive()) {
-				Thread.yield();
-			}
-			System.exit(100);
-		}
-
-
 		// Start
 		long startTime = System.currentTimeMillis();
 		Log.println("Create html files ...");
-		
+
 		// Generate files
 		Result res = null;
 		try {
