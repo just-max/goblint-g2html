@@ -9,8 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.xml.stream.XMLStreamException;
 
-import fi.iki.elonen.NanoHTTPD;
-
 import static java.nio.file.Files.move;
 
 public class Main {
