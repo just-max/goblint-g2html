@@ -2,6 +2,7 @@ package g2html;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 class Worker extends Thread {
 	final Process process;
@@ -43,8 +44,8 @@ public class ProcessDotFileToSvg implements Runnable {
 	public void run() {
 		Log.printf("Starting:%s.\n", from.getPath());
 		try {
-			String myCommand = Config.conf.getDotPath()+" "+from.getAbsolutePath()+" -Tsvg -o "+to.getAbsolutePath();
-			Log.printf("Executing: '%s'\n",myCommand);
+			String[] myCommand = new String[]{Config.conf.getDotPath(), from.getAbsolutePath(), "-Tsvg", "-o", to.getAbsolutePath()};
+			Log.printf("Executing: '%s'\n",Arrays.toString(myCommand));
 			Worker worker = new Worker(Runtime.getRuntime().exec(myCommand));
 			worker.start();
 			try {
@@ -60,8 +61,8 @@ public class ProcessDotFileToSvg implements Runnable {
 			} finally {
 				worker.process.destroy();
 			}
-			String myCommand2 = Config.conf.getAlternativeDotPath()+" "+from.getAbsolutePath()+" -Tsvg -o "+to.getAbsolutePath();
-			Log.printf("Executing: '%s'\n",myCommand2);
+			String[] myCommand2 = new String[]{Config.conf.getAlternativeDotPath(), from.getAbsolutePath(), "-Tsvg", "-o", to.getAbsolutePath()};
+			Log.printf("Executing: '%s'\n",Arrays.toString(myCommand2));
 			worker = new Worker(Runtime.getRuntime().exec(myCommand2));
 			worker.start();
 			try {
