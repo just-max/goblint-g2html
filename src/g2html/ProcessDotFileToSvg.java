@@ -52,38 +52,40 @@ public class ProcessDotFileToSvg implements Runnable {
 	public void run() {
 		Log.printf("Starting:%s.\n", from.getPath());
 		try {
-			Worker worker;
-			File[] files = from.listFiles();
-			// not a directory
-			if (files == null) {
-				String[] myCommand = new String[]{Config.conf.getDotPath(), from.getAbsolutePath(), "-Tsvg", "-o", to.getAbsolutePath()};
-				Log.printf("Executing: '%s'\n", Arrays.toString(myCommand));
-				worker = new Worker(List.of(Runtime.getRuntime().exec(myCommand)));
-			}
-			else {
-				String[] packCommand = Stream.concat(
-						Stream.of(Config.conf.getGvPackPath(), "-u"),
-						Arrays.stream(files).sorted(Comparator.comparing(File::getName)).map(f -> f.getAbsolutePath()))
-					.toArray(String[]::new);
-				String[] dotCommand = { Config.conf.getDotPath(), "-Tsvg", "-o", to.getAbsolutePath() };
-				worker = new Worker(
-					ProcessBuilder.startPipeline(
-						List.of(new ProcessBuilder(packCommand), new ProcessBuilder(dotCommand))));
-			}
-			Thread t = new Thread(worker);
-			t.start();
-			try {
-				t.join(Config.conf.getDotTimeout());
-				if (!t.isAlive()) {
-					Log.printf("Finished:%s.\n", from.getPath());
-					return;
+			for (String dotPath : List.of(Config.conf.getDotPath(), Config.conf.getAlternativeDotPath())) {
+				Worker worker;
+				File[] files = from.listFiles();
+				// not a directory
+				if (files == null) {
+					String[] myCommand = new String[]{dotPath, from.getAbsolutePath(), "-Tsvg", "-o", to.getAbsolutePath()};
+					Log.printf("Executing: '%s'\n", Arrays.toString(myCommand));
+					worker = new Worker(List.of(Runtime.getRuntime().exec(myCommand)));
 				}
-			} catch(InterruptedException ex) {
-				t.interrupt();
-				Thread.currentThread().interrupt();
-				throw ex;
-			} finally {
-				worker.stop();
+				else {
+					String[] packCommand = Stream.concat(
+							Stream.of(Config.conf.getGvPackPath(), "-u"),
+							Arrays.stream(files).sorted(Comparator.comparing(File::getName)).map(f -> f.getAbsolutePath()))
+						.toArray(String[]::new);
+					String[] dotCommand = { dotPath, "-Tsvg", "-o", to.getAbsolutePath() };
+					worker = new Worker(
+						ProcessBuilder.startPipeline(
+							List.of(new ProcessBuilder(packCommand), new ProcessBuilder(dotCommand))));
+				}
+				Thread t = new Thread(worker);
+				t.start();
+				try {
+					t.join(Config.conf.getDotTimeout());
+					if (!t.isAlive()) {
+						Log.printf("Finished:%s.\n", from.getPath());
+						return;
+					}
+				} catch(InterruptedException ex) {
+					t.interrupt();
+					Thread.currentThread().interrupt();
+					throw ex;
+				} finally {
+					worker.stop();
+				}
 			}
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
