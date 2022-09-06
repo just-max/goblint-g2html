@@ -27,6 +27,9 @@ public class Config {
 		@Option (shortName = "d",longName = "dot-path", defaultValue = "dot", exactly = 1,description = "Path to the dot binary.")
 		String getDotPath();
 
+		@Option (longName = "gvpack-path", defaultValue = "gvpack", exactly = 1,description = "Path to the gvpack binary.")
+		String getGvPackPath();
+
 		@Option (longName = "dot-alternative-path", defaultValue = "sfdp", exactly = 1,description = "Path to an alternative dot binary.")
 		String getAlternativeDotPath();
 

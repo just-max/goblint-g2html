@@ -1,20 +1,28 @@
 package g2html;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-class Worker extends Thread {
-	final Process process;
+class Worker implements Runnable {
+	final List<Process> processes;
 	Integer exit;
-	Worker(Process process) {
-		this.process = process;
+	Worker(List<Process> processes) {
+		this.processes = processes;
 	}
 	public void run() {
-		try {
-			exit = process.waitFor();
-		} catch (InterruptedException ignore) {
-		}
+		processes.forEach(p -> {
+			try { p.waitFor(); }
+			catch (InterruptedException ignore) {}
+		});
+	}
+	public void stop() {
+		processes.forEach(Process::destroy);
 	}
 }
 
@@ -44,39 +52,38 @@ public class ProcessDotFileToSvg implements Runnable {
 	public void run() {
 		Log.printf("Starting:%s.\n", from.getPath());
 		try {
-			String[] myCommand = new String[]{Config.conf.getDotPath(), from.getAbsolutePath(), "-Tsvg", "-o", to.getAbsolutePath()};
-			Log.printf("Executing: '%s'\n",Arrays.toString(myCommand));
-			Worker worker = new Worker(Runtime.getRuntime().exec(myCommand));
-			worker.start();
-			try {
-				worker.join(Config.conf.getDotTimeout());
-				if (!worker.isAlive()) {
-					Log.printf("Finished:%s.\n", from.getPath());
-					return;
-				}
-			} catch(InterruptedException ex) {
-				worker.interrupt();
-				Thread.currentThread().interrupt();
-				throw ex;
-			} finally {
-				worker.process.destroy();
+			Worker worker;
+			File[] files = from.listFiles();
+			// not a directory
+			if (files == null) {
+				String[] myCommand = new String[]{Config.conf.getDotPath(), from.getAbsolutePath(), "-Tsvg", "-o", to.getAbsolutePath()};
+				Log.printf("Executing: '%s'\n", Arrays.toString(myCommand));
+				worker = new Worker(List.of(Runtime.getRuntime().exec(myCommand)));
 			}
-			String[] myCommand2 = new String[]{Config.conf.getAlternativeDotPath(), from.getAbsolutePath(), "-Tsvg", "-o", to.getAbsolutePath()};
-			Log.printf("Executing: '%s'\n",Arrays.toString(myCommand2));
-			worker = new Worker(Runtime.getRuntime().exec(myCommand2));
-			worker.start();
+			else {
+				String[] packCommand = Stream.concat(
+						Stream.of(Config.conf.getGvPackPath(), "-u"),
+						Arrays.stream(files).sorted(Comparator.comparing(File::getName)).map(f -> f.getAbsolutePath()))
+					.toArray(String[]::new);
+				String[] dotCommand = { Config.conf.getDotPath(), "-Tsvg", "-o", to.getAbsolutePath() };
+				worker = new Worker(
+					ProcessBuilder.startPipeline(
+						List.of(new ProcessBuilder(packCommand), new ProcessBuilder(dotCommand))));
+			}
+			Thread t = new Thread(worker);
+			t.start();
 			try {
-				worker.join(Config.conf.getDotTimeout());
-				if (!worker.isAlive()) {
+				t.join(Config.conf.getDotTimeout());
+				if (!t.isAlive()) {
 					Log.printf("Finished:%s.\n", from.getPath());
 					return;
 				}
 			} catch(InterruptedException ex) {
-				worker.interrupt();
+				t.interrupt();
 				Thread.currentThread().interrupt();
 				throw ex;
 			} finally {
-				worker.process.destroy();
+				worker.stop();
 			}
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
